@@ -195,8 +195,12 @@ class Crypt_GPG_DecryptStatusHandler
         case 'NEED_PASSPHRASE':
             // send passphrase to the GPG engine
             $subKeyId = $tokens[1];
+            $keyId = $tokens[2];
             if (array_key_exists($subKeyId, $this->keys)) {
                 $passphrase = $this->keys[$subKeyId]['passphrase'];
+                $this->engine->sendCommand($passphrase);
+            } elseif (array_key_exists($keyId, $this->keys)) {
+                $passphrase = $this->keys[$keyId]['passphrase'];
                 $this->engine->sendCommand($passphrase);
             } else {
                 $this->engine->sendCommand('');
